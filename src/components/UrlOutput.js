@@ -6,43 +6,9 @@ import Button from '@mui/material/Button';
 import axios from "axios";
 import { useEffect, useState } from "react"
 import CopyToClipboard from "react-copy-to-clipboard";
-const successRes = (msg) => {
-    return (
-        <div className="relative pt-2 mx-auto">
-        <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
-            <Box gridColumn="span 10">
-                <Alert severity="success">{msg}</Alert>       
-            </Box>
-            <Box gridColumn="span 2">
-                <CopyToClipboard
-                text={msg}>
-                    <Button variant="text" endIcon={<ContentCopyIcon />}>
-                        COPY
-                    </Button>
-                </CopyToClipboard>
-            </Box>
-        </Box>
-                                 
-    </div>
-    )
-}
 
 
-const failedRes = (msg) => {
-    return (
-        <div className="relative pt-2 mx-auto">
-            <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
-                <Box gridColumn="span 12">
-                    <Alert severity="warning">{msg}</Alert>       
-                </Box>
-            </Box>               
-        </div>
-    )
-}
-
-
-
-const UrlOutput = ({inputValue, loading, setLoading}) => {
+const UrlOutput = ({inputValue, setInputValue, loading, setLoading}) => {
     const [shortenLink, setShortenLink] = useState("");
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("")
@@ -50,16 +16,22 @@ const UrlOutput = ({inputValue, loading, setLoading}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-            const tiny = { url: inputValue.url, alias: inputValue.alias};
+            const tiny = { url: inputValue.url, alias: inputValue.alias, domain: "url.21tiny.com"};
             //   const response = await axios.post(`https://url.21tiny.com/`,tiny);
-            const response = await axios.post(`http://localhost:8080/`,tiny);
+            const response = await axios.post(`http://url.21tiny.com/`,tiny);
               setShortenLink(response.data.tinyUrl);
+              setError(false)
             } catch(err) {
               console.log(err.response)
-              setErrorMsg("Please check your URL or try another alias")
-              setError(err);
+              setErrorMsg(err.response.data.message)
+              setError(err)
+              setShortenLink("")
             } finally {
               setLoading(false);
+              setInputValue({
+                "url": "",
+                "alias": ""
+            });
             }
         }
         if(loading) {
@@ -67,14 +39,34 @@ const UrlOutput = ({inputValue, loading, setLoading}) => {
         }
       }, [inputValue]);
     
-    if(shortenLink){
-        return successRes(shortenLink);
-    }  
-    if(error){
-        return failedRes(errorMsg);
-    }
     return (
-        <></>
+        <div>
+            {shortenLink && !error &&
+            <div className="relative pt-2 mx-auto">
+            <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
+                <Box gridColumn="span 10">
+                    <Alert severity="success">{shortenLink}</Alert>       
+                </Box>
+                <Box gridColumn="span 2">
+                    <CopyToClipboard
+                    text={shortenLink}>
+                        <Button variant="text" endIcon={<ContentCopyIcon />}>
+                            COPY
+                        </Button>
+                    </CopyToClipboard>
+                </Box>
+            </Box>
+                                     
+            </div>}
+            {error && !shortenLink &&
+             <div className="relative pt-2 mx-auto">
+             <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
+                 <Box gridColumn="span 12">
+                     <Alert severity="warning">{errorMsg}</Alert>       
+                 </Box>
+             </Box>               
+            </div>}
+        </div>
     )
    
 }

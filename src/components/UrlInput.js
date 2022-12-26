@@ -1,7 +1,6 @@
 
 import { useState } from "react"
 import Box from '@mui/material/Box';
-import { Input } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
 import validator from 'validator'
@@ -102,9 +101,6 @@ const UrlInput = ({setInputValue, loading, setLoading}) => {
                     </LoadingButton>
                 </Box>
             </Box>                                      
-
-
-            
         </div>
 
         

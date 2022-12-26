@@ -11,7 +11,7 @@ const MakeUrl = () => {
     return(
             <div className=" bg-[#dbe9f6] rounded-lg overflow-hidden sm:mr-10 p-10 items-end  relative">
             <UrlInput setInputValue={setInputValue} loading={loading} setLoading={setLoading}/>
-            <UrlOutput inputValue={inputValue} loading={loading} setLoading={setLoading}/>
+            <UrlOutput inputValue={inputValue} setInputValue={setInputValue} loading={loading} setLoading={setLoading}/>
             </div>
     )
 }
