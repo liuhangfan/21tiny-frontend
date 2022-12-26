@@ -15,9 +15,12 @@ const successRes = (msg) => {
                 <Alert severity="success">{msg}</Alert>       
             </Box>
             <Box gridColumn="span 2">
-                <Button variant="text" endIcon={<ContentCopyIcon />}>
-                    Copy
-                </Button>
+                <CopyToClipboard
+                text={msg}>
+                    <Button variant="text" endIcon={<ContentCopyIcon />}>
+                        COPY
+                    </Button>
+                </CopyToClipboard>
             </Box>
         </Box>
                                  
