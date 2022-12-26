@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import axios from "axios";
 import { useEffect, useState } from "react"
 import CopyToClipboard from "react-copy-to-clipboard";
-
 const successRes = (msg) => {
     return (
         <div className="relative pt-2 mx-auto">
@@ -45,15 +44,15 @@ const failedRes = (msg) => {
 
 const UrlOutput = ({inputValue, loading, setLoading}) => {
     const [shortenLink, setShortenLink] = useState("");
-    const [copied, setCopied] = useState(false);
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-              const tiny = { url: inputValue.url, alias: inputValue.alias};
-              const response = await axios.post(`https://url.21tiny.com/`,tiny);
+            const tiny = { url: inputValue.url, alias: inputValue.alias};
+            //   const response = await axios.post(`https://url.21tiny.com/`,tiny);
+            const response = await axios.post(`http://localhost:8080/`,tiny);
               setShortenLink(response.data.tinyUrl);
             } catch(err) {
               console.log(err.response)
