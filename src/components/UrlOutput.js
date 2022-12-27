@@ -17,8 +17,7 @@ const UrlOutput = ({inputValue, setInputValue, loading, setLoading}) => {
         const fetchData = async () => {
             try {
             const tiny = { url: inputValue.url, alias: inputValue.alias, domain: "url.21tiny.com"};
-            //   const response = await axios.post(`https://url.21tiny.com/`,tiny);
-            const response = await axios.post(`http://url.21tiny.com/`,tiny);
+            const response = await axios.post(`https://url.21tiny.com/`,tiny);
               setShortenLink(response.data.tinyUrl);
               setError(false)
             } catch(err) {
